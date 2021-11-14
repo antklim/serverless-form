@@ -15,35 +15,44 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="shortcut icon" href="favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
   <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
-
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-5">
-        <h1 class="display-1">Welcome to Serverless Form!</h1>
-        <form>
+        <h1 class="display-2">Welcome to Serverless Form!</h1>
+        <!-- TODO: update id -->
+        <div id="liveAlertPlaceholder"></div>
+        <!-- <form action="#" onsubmit="return false"> -->
+        <form action="/keep-me-posted/" method="post" enctype="application/json">
+        <!-- <form action="#" onsubmit="submitIntention(); return false"> -->
           <div class="mb-3">
             <label for="inputEmail" class="form-label">Email address</label>
             <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">
-            <label for="inputFullName" class="form-label">Password</label>
+            <label for="inputFullName" class="form-label">Full name</label>
             <input type="text" class="form-control" id="inputFullName">
           </div>
           <div class="mb-3">
             <label for="inputComment" class="form-label">Comment</label>
             <textarea class="form-control" id="inputComment" rows="3"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Keep me posted!</button>
+          <button type="submit" class="btn btn-primary" id="submitIntentionBtn">Keep me posted!</button>
         </form>
       </div>
     </div>
   </div>
+
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>
