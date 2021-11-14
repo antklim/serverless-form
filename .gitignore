@@ -11,10 +11,15 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 *.txt
+!form/humans.txt
+!form/LICENSE.txt
+!form/robots.txt
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
 node_modules
+dist
+.cache
 
 # Build directory
 build/
