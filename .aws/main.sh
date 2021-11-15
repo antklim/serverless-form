@@ -12,6 +12,10 @@ if [ -z $TABLE ] ; then
   echo "error: TABLE required"
   exit 1 
 fi
+if [ -z $API_RESOURCE ] ; then
+  echo "error: API_RESOURCE required"
+  exit 1
+fi
 
 stack_name=$PROJECT
 stack_output_file=$stack_name-output.txt
@@ -26,6 +30,7 @@ if [ $stacks -eq 0 ] ; then
     --template-body file://main.yml \
     --parameters ParameterKey=ProjectName,ParameterValue=$PROJECT \
     ParameterKey=TableName,ParameterValue=$TABLE \
+    ParameterKey=ApiResource,ParameterValue=$API_RESOURCE \
     --tags Key=project,Value=$PROJECT \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
@@ -54,6 +59,7 @@ else
     --template-body file://main.yml \
     --parameters ParameterKey=ProjectName,UsePreviousValue=true \
     ParameterKey=TableName,UsePreviousValue=true \
+    ParameterKey=ApiResource,UsePreviousValue=true \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
     --output text > $stack_output_file
