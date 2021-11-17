@@ -1,5 +1,7 @@
-var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-var alertTrigger = document.getElementById('submitIntentionBtn')
+// WARNING: JS form submition does not include form validation!
+
+var alertPlaceholder = document.getElementById('formSubmitResult')
+var intentionForm = document.getElementById('intentionForm')
 
 function alert(message, type) {
   var wrapper = document.createElement('div')
@@ -8,12 +10,30 @@ function alert(message, type) {
   alertPlaceholder.append(wrapper)
 }
 
-if (alertTrigger) {
-  alertTrigger.addEventListener('click', function () {
-    alert('Nice, you triggered this alert message!', 'success')
+function onIntentionSubmit(event) {
+  event.preventDefault()
+  const formData = new FormData(this)
+  const entries = formData.entries()
+  const data = Object.fromEntries(entries)
+
+  let responseStatus
+  fetch("--- REPLACE ME WITH API URL ---", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  }).then((response) => {
+    responseStatus = response.status
+    return response.json()
+  }).then((json) => {
+    let alertType = (responseStatus == 200) ? 'success' : 'danger'
+    alert(json.message, alertType)
+  }).catch((err) => {
+    alert('Failed to submit form :(', 'danger')
   })
 }
 
-function submitIntention() {
-  console.log('Submiting intention...')
+if (intentionForm) {
+  intentionForm.addEventListener('submit', onIntentionSubmit)
 }

@@ -22,13 +22,16 @@
     <div class="row justify-content-md-center">
       <div class="col-5">
         <h1 class="display-2">Welcome to Serverless Form!</h1>
-        <!-- TODO: update id -->
-        <div id="liveAlertPlaceholder"></div>
-        <!-- <form action="#" onsubmit="return false"> -->
+
+        <!-- INFO: Option 2. Submit using JS.  -->
+        <div id="formSubmitResult"></div>
 
         <!-- INFO: Option 1. Submit using form. It will redirect to the results page, no JS required.  -->
-        <form action="--- REPLACE ME WITH API URL ---" method="post" enctype="application/x-www-form-urlencoded">
-          <fieldset>
+        <!-- <form action="--- REPLACE ME WITH API URL ---" method="post" enctype="application/x-www-form-urlencoded"> -->
+
+        <!-- INFO: Option 2. Submit using JS.  -->
+        <form id="intentionForm">
+         <fieldset>
             <div class="mb-3">
               <label for="email" class="form-label">Email address</label>
               <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
@@ -36,11 +39,11 @@
             </div>
             <div class="mb-3">
               <label for="fullName" class="form-label">Full name</label>
-              <input type="text" class="form-control" id="fullName" name="fullName" required>
+              <input type="text" class="form-control" id="fullName" name="fullName" maxlength="250" required>
             </div>
             <div class="mb-3">
               <label for="comment" class="form-label">Comment</label>
-              <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+              <textarea class="form-control" id="comment" name="comment" rows="3" maxlength="250"></textarea>
             </div>
             <button type="submit" class="btn btn-primary" id="submitIntentionBtn">Keep me posted!</button>
           </fieldset>
@@ -49,9 +52,10 @@
     </div>
   </div>
 
-  <!-- <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <!-- INFO: Option 2. Submit using JS.  -->
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script> -->
+  <script src="js/main.js"></script>
 </body>
 
 </html>
