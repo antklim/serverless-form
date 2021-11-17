@@ -16,20 +16,19 @@ function onIntentionSubmit(event) {
   const entries = formData.entries()
   const data = Object.fromEntries(entries)
 
-  let responseStatus
   fetch("--- REPLACE ME WITH API URL ---", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
     }
-  }).then((response) => {
-    responseStatus = response.status
-    return response.json()
-  }).then((json) => {
-    let alertType = (responseStatus == 200) ? 'success' : 'danger'
-    alert(json.message, alertType)
-  }).catch((err) => {
+  })
+  .then((response) => response.json())
+  .then(({statusCode, message}) => {
+    let alertType = (statusCode == 200) ? 'success' : 'danger'
+    alert(message, alertType)
+  })
+  .catch((err) => {
     alert('Failed to submit form :(', 'danger')
   })
 }
