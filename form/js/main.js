@@ -16,7 +16,7 @@ function onIntentionSubmit(event) {
   const entries = formData.entries()
   const data = Object.fromEntries(entries)
 
-  fetch("--- REPLACE ME WITH API URL ---", {
+  fetch("/keep-me-posted", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
