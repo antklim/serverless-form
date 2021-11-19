@@ -16,6 +16,10 @@ if [ -z $API_RESOURCE ] ; then
   echo "error: API_RESOURCE required"
   exit 1
 fi
+if [ -z $FRONTEND_BUCKET_NAME ] ; then
+  echo "error: FRONTEND_BUCKET_NAME required"
+  exit 1
+fi
 
 stack_name=$PROJECT
 stack_output_file=$stack_name-output.txt
@@ -31,6 +35,7 @@ if [ $stacks -eq 0 ] ; then
     --parameters ParameterKey=ProjectName,ParameterValue=$PROJECT \
     ParameterKey=TableName,ParameterValue=$TABLE \
     ParameterKey=ApiResource,ParameterValue=$API_RESOURCE \
+    ParameterKey=FrontendBucketName,ParameterValue=$FRONTEND_BUCKET_NAME \
     --tags Key=project,Value=$PROJECT \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
@@ -60,6 +65,7 @@ else
     --parameters ParameterKey=ProjectName,UsePreviousValue=true \
     ParameterKey=TableName,UsePreviousValue=true \
     ParameterKey=ApiResource,UsePreviousValue=true \
+    ParameterKey=FrontendBucketName,UsePreviousValue=true \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
     --output text > $stack_output_file
