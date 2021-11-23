@@ -9,6 +9,7 @@
 . .env
 
 REGION=${REGION:-"ap-southeast-2"}
+DISTRIBUTION_ENABLED=${DISTRIBUTION_ENABLED:-"false"}
 
 if [ -z $PROJECT ] ; then
   echo "error: PROJECT required"
@@ -42,6 +43,7 @@ if [ $stacks -eq 0 ] ; then
     ParameterKey=TableName,ParameterValue=$TABLE \
     ParameterKey=ApiResource,ParameterValue=$API_RESOURCE \
     ParameterKey=FrontendBucketName,ParameterValue=$FRONTEND_BUCKET_NAME \
+    ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
     --tags Key=project,Value=$PROJECT \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
@@ -72,6 +74,7 @@ else
     ParameterKey=TableName,UsePreviousValue=true \
     ParameterKey=ApiResource,UsePreviousValue=true \
     ParameterKey=FrontendBucketName,UsePreviousValue=true \
+    ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
     --output text > $stack_output_file
