@@ -8,8 +8,6 @@
 
 . .env
 
-REGION=${REGION:-"ap-southeast-2"}
-
 if [ -z $FRONTEND_BUCKET_NAME ] ; then
   echo "error: FRONTEND_BUCKET_NAME required"
   exit 1
