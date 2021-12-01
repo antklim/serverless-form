@@ -2,52 +2,32 @@
 
 ################################################################################
 ##
-## The following creates AWS resources for the project
+## The following creates AWS WAFv2 WebACL. 
 ##
+## Because it's for CLOUDFRONT distribution, it must be created in
+## the US East (N. Virginia) Region, us-east-1.
+## 
 ################################################################################
 
 . .env
 
-REGION=${REGION:-"ap-southeast-2"}
-DISTRIBUTION_ENABLED=${DISTRIBUTION_ENABLED:-"false"}
+WAF_REGION="us-east-1"
 
-if [ -z $PROJECT ] ; then
-  echo "error: PROJECT required"
-  exit 1 
-fi
-if [ -z $TABLE ] ; then
-  echo "error: TABLE required"
-  exit 1 
-fi
-if [ -z $API_RESOURCE ] ; then
-  echo "error: API_RESOURCE required"
-  exit 1
-fi
-if [ -z $FRONTEND_BUCKET_NAME ] ; then
-  echo "error: FRONTEND_BUCKET_NAME required"
-  exit 1
-fi
-
-stack_name=$PROJECT
+stack_name=$PROJECT-waf
 stack_output_file=$stack_name-output.txt
 
 stacks=$(aws cloudformation describe-stacks \
   --query "Stacks[?StackName=='$stack_name']" \
-  --region $REGION \
+  --region $WAF_REGION \
   --output json | jq '. | length')
 
 if [ $stacks -eq 0 ] ; then
-  echo "Creating resources for $PROJECT project ..."
+  echo "Creating WAF for $PROJECT project ..."
   aws cloudformation create-stack --stack-name $stack_name \
-    --template-body file://main.yml \
+    --template-body file://waf.yml \
     --parameters ParameterKey=ProjectName,ParameterValue=$PROJECT \
-    ParameterKey=TableName,ParameterValue=$TABLE \
-    ParameterKey=ApiResource,ParameterValue=$API_RESOURCE \
-    ParameterKey=FrontendBucketName,ParameterValue=$FRONTEND_BUCKET_NAME \
-    ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
     --tags Key=project,Value=$PROJECT \
-    --region $REGION \
-    --capabilities CAPABILITY_NAMED_IAM \
+    --region $WAF_REGION \
     --output text > $stack_output_file
 
   status=$?
@@ -58,7 +38,7 @@ if [ $stacks -eq 0 ] ; then
 
   echo "Waiting for resources creation completion ..."
   aws cloudformation wait stack-create-complete --stack-name $stack_name \
-    --region $REGION
+    --region $WAF_REGION
 
   status=$?
   if [ $status -ne 0 ] ; then
@@ -66,18 +46,13 @@ if [ $stacks -eq 0 ] ; then
     exit 1
   fi
 
-  echo "$PROJECT resources successfully created."
+  echo "$PROJECT WAF successfully created."
 else
-  echo "Updating resources for $PROJECT project ..."
+  echo "Updating WAF for $PROJECT project ..."
   aws cloudformation update-stack --stack-name $stack_name \
-    --template-body file://main.yml \
+    --template-body file://waf.yml \
     --parameters ParameterKey=ProjectName,UsePreviousValue=true \
-    ParameterKey=TableName,UsePreviousValue=true \
-    ParameterKey=ApiResource,UsePreviousValue=true \
-    ParameterKey=FrontendBucketName,UsePreviousValue=true \
-    ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
-    --region $REGION \
-    --capabilities CAPABILITY_NAMED_IAM \
+    --region $WAF_REGION \
     --output text > $stack_output_file
 
   status=$?
@@ -88,7 +63,7 @@ else
 
   echo "Waiting for resources update completion ..."
   aws cloudformation wait stack-update-complete --stack-name $stack_name \
-    --region $REGION
+    --region $WAF_REGION
 
   status=$?
   if [ $status -ne 0 ] ; then
@@ -96,5 +71,5 @@ else
     exit 1
   fi
 
-  echo "$PROJECT resources successfully updated."
+  echo "$PROJECT WAF successfully updated."
 fi
