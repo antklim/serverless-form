@@ -27,6 +27,10 @@ if [ -z $FRONTEND_BUCKET_NAME ] ; then
   echo "error: FRONTEND_BUCKET_NAME required"
   exit 1
 fi
+if [ -z "$WEB_ACL_ID" ] ; then
+  echo "error: WEB_ACL_ID required"
+  exit 1
+fi
 
 stack_name=$PROJECT
 stack_output_file=$stack_name-output.txt
@@ -45,6 +49,7 @@ if [ $stacks -eq 0 ] ; then
     ParameterKey=ApiResource,ParameterValue=$API_RESOURCE \
     ParameterKey=FrontendBucketName,ParameterValue=$FRONTEND_BUCKET_NAME \
     ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
+    ParameterKey=WebACLId,ParameterValue="$WEB_ACL_ID" \
     --tags Key=project,Value=$PROJECT \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
@@ -76,6 +81,7 @@ else
     ParameterKey=ApiResource,UsePreviousValue=true \
     ParameterKey=FrontendBucketName,UsePreviousValue=true \
     ParameterKey=DistributionEnabled,ParameterValue=$DISTRIBUTION_ENABLED \
+    ParameterKey=WebACLId,UsePreviousValue=true \
     --region $REGION \
     --capabilities CAPABILITY_NAMED_IAM \
     --output text > $stack_output_file
